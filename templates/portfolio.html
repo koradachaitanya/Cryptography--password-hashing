@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Korada Chaitanya's Cryptography & Password Hashing taks Portfolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .black-text { color: #111 !important; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-flex">
+            <h1 class="black-text">🔐 Cryptography & Password Hashing</h1>
+            <nav>
+                <a href="{{ url_for('home') }}" class="black-text">Home</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section>
+            <h2>About This Project</h2>
+            <p>
+                This web application demonstrates encryption/decryption and password hashing/verification using Flask, bcrypt, and the <b>cryptography</b> library (Fernet).
+            </p>
+        </section>
+        <section>
+            <h2>Features</h2>
+            <ul>
+                <li>Encrypt and decrypt text using Fernet (symmetric encryption from the cryptography library)</li>
+                <li>Hash passwords securely with bcrypt</li>
+                <li>Verify passwords against bcrypt hashes</li>
+                <li>Modern, colorful, and interactive frontend</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Encryption & Decryption</h2>
+            <p>
+                <b>Encryption:</b> Enter any text and click <b>Encrypt</b> to see the Fernet-encrypted ciphertext.<br>
+                <b>Decryption:</b> Paste a Fernet-encrypted ciphertext and click <b>Decrypt</b> to reveal the original plaintext.<br>
+                The app uses <b>Fernet</b> from the <b>cryptography</b> library, which provides secure, authenticated symmetric encryption.
+            </p>
+        </section>
+        <section>
+            <h2>Password Hashing</h2>
+            <p>
+                <b>Password Hashing:</b> Enter a password and click <b>Hash Password</b> to generate a bcrypt hash.<br>
+                <b>Password Verification:</b> Enter a password and a bcrypt hash to check if they match.<br>
+                This ensures passwords are never stored or transmitted in plain text.
+            </p>
+        </section>
+        <section>
+            <h2>Technologies Used</h2>
+            <ul>
+                <li>Python (Flask)</li>
+                <li>bcrypt</li>
+                <li>cryptography (Fernet)</li>
+                <li>HTML, CSS, JavaScript</li>
+            </ul>
+        </section>
+        <section>
+            <h2>How to Run</h2>
+            <ol>
+                <li>Clone the repository or download the code.</li>
+                <li>Install dependencies: <code>pip install flask bcrypt cryptography</code></li>
+                <li>Set environment variable <code>FERNET_KEY</code>.</li>
+                <li>Run <code>python app.py</code> and open <a href="http://127.0.0.1:5000" target="_blank">http://127.0.0.1:5000</a></li>
+            </ol>
+        </section>
+        <section>
+            <h2>Live Demo</h2>
+            <p>
+                <a href="http://127.0.0.1:5000" target="_blank">Open the Cryptography & Password Hashing</a>
+            </p>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p class="black-text">Cryptography & Password Hashing | Created for educational purposes</p>
+        </div>
+    </footer>
+</body>
+</html>
