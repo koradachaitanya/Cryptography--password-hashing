@@ -47,13 +47,6 @@ This project demonstrates practical implementations of basic encryption and secu
 
 ---
 
-## Usage
-
-1. **Install required Python libraries:**
-2. **Run the Python scripts** for encryption/decryption and password hashing.
-3. **Open `index.html` in a web browser** to view the portfolio website.
-
----
 
 ## Security Notes
 
