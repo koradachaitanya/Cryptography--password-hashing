@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptography & Password Hashing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .result-label {
+            display: block;
+            margin-top: 8px;
+            margin-bottom: 2px;
+            font-weight: bold;
+            color: #333;
+        }
+        .wide-bar {
+            min-width: 100%;
+            word-break: break-all;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container header-flex">
+        <h1>🔐 Cryptography & Password Hashing </h1>
+        <nav>
+            <a href="{{ url_for('portfolio') }}">Portfolio</a>
+        </nav>
+    </div>
+    <main class="container">
+        <section class="intro">
+            <h2>Introduction to Cryptography</h2>
+            <p>
+                Cryptography is the practice and study of techniques for secure communication in the presence of adversaries.
+                Modern cryptography exists at the intersection of mathematics, computer science, and electrical engineering.
+            </p>
+            <div class="card-grid">
+                <div class="card blue">
+                    <h3>Encryption</h3>
+                    <p>
+                        Encryption is the process of encoding information so that only authorized parties can access it.
+                        It transforms plaintext into ciphertext using an algorithm and key.
+                    </p>
+                </div>
+                <div class="card green">
+                    <h3>Decryption</h3>
+                    <p>
+                        Decryption is the process of converting ciphertext back into plaintext,
+                        allowing authorized users to read the original message.
+                    </p>
+                </div>
+                <div class="card purple">
+                    <h3>Password Hashing</h3>
+                    <p>
+                        Password hashing converts passwords into fixed-length strings of characters,
+                        making it difficult to reverse-engineer the original password.
+                    </p>
+                </div> 
+            </div>
+        </section>
+
+        <section>
+            <h2>Encryption & Decryption</h2>
+            <div class="input-group">
+                <input type="text" id="encryption-input" placeholder="Enter text to encrypt">
+                <button class="btn btn-primary" onclick="encrypt()">Encrypt</button>
+            </div>
+            <label for="encryption-result" class="result-label">Encrypted text:</label>
+            <div class="result info wide-bar" id="encryption-result"></div>
+            
+            <div class="input-group">
+                <input type="text" id="decryption-input" placeholder="Enter text to decrypt">
+                <button class="btn btn-accent" onclick="decrypt()">Decrypt</button>
+            </div>
+            <label for="decryption-result" class="result-label">Decrypted text:</label>
+            <div class="result info wide-bar" id="decryption-result"></div>
+            <div id="match-result"></div>
+        </section>
+
+        <section>
+            <h2>Password Hashing</h2>
+            <div class="input-group">
+                <input type="password" id="password-input" placeholder="Enter password to hash">
+                <button class="btn btn-accent" onclick="hashPassword()">Hash Password</button>
+            </div>
+            <label for="hash-result" class="result-label">Hashed password:</label>
+            <div class="result accent wide-bar" id="hash-result"></div>
+
+            <div class="input-group">
+                <input type="password" id="verify-password" placeholder="Enter password to verify">
+                <input type="text" id="verify-hash" placeholder="Enter hash to verify against">
+                <button class="btn btn-warning" onclick="verifyPassword()">Verify Password</button>
+            </div>
+            <div class="result warning wide-bar" id="verify-result"></div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p class="black-text">Created for educational purposes</p>
+        </div>
+    </footer>
+    <script>
+        let lastPlaintext = "";
+
+        async function encrypt() {
+            const text = document.getElementById('encryption-input').value;
+            lastPlaintext = text;
+            document.getElementById('match-result').innerHTML = "";
+            const response = await fetch('/encrypt', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({text})
+            });
+            const data = await response.json();
+            document.getElementById('encryption-result').textContent = data.result || data.error;
+            if (data.result) {
+                document.getElementById('decryption-input').value = data.result;
+            }
+        }
+
+        async function decrypt() {
+            const text = document.getElementById('decryption-input').value;
+            const response = await fetch('/decrypt', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({text})
+            });
+            const data = await response.json();
+            document.getElementById('decryption-result').textContent = data.result || data.error;
+            if (data.result && lastPlaintext) {
+                if (lastPlaintext === data.result) {
+                    document.getElementById('match-result').innerHTML =
+                        '<span class="success-msg">✅ Success! Decrypted text matches the original.</span>';
+                } else {
+                    document.getElementById('match-result').innerHTML =
+                        '<span class="error-msg">❌ Error: Decrypted text does not match the original.</span>';
+                }
+            } else {
+                document.getElementById('match-result').innerHTML = "";
+            }
+        }
+
+        async function hashPassword() {
+            const password = document.getElementById('password-input').value;
+            const response = await fetch('/hash', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({password})
+            });
+            const data = await response.json();
+            document.getElementById('hash-result').textContent = data.result || data.error;
+        }
+
+        async function verifyPassword() {
+            const password = document.getElementById('verify-password').value;
+            const hash = document.getElementById('verify-hash').value;
+            const response = await fetch('/verify', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({password, hash})
+            });
+            const data = await response.json();
+            document.getElementById('verify-result').innerHTML =
+                data.result
+                ? '<span class="success-msg">✅ Password matches!</span>'
+                : '<span class="error-msg">❌ Password does not match!</span>';
+        }
+    </script>
+</body>
+</html>
